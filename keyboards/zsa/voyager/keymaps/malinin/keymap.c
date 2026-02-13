@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+
 #include QMK_KEYBOARD_H
 
 enum layers { BASE, SYMBOLS, MEDIA_NAV, NUM };
@@ -51,6 +53,10 @@ const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
   'L', 'L', 'L', 'L', 'L', 'L', 'R', 'R', 'R', 'R', 'R', 'R',
   '*', '*', '*', '*'
 );
+
+const custom_shift_key_t custom_shift_keys[] = {
+  {KC_BSPC, KC_DELETE}, // Shift + Backspace = Delete
+};
 
 
 void keyboard_post_init_user(void) {

@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+
 #define CHORDAL_HOLD
 #undef ONESHOT_TIMEOUT
 #define ONESHOT_TIMEOUT 2000
