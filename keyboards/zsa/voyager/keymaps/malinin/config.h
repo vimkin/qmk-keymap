@@ -1,20 +1,14 @@
 /* SPDX-License-Identifier: GPL-2.0-or-later */
 
-#define CHORDAL_HOLD
-#undef ONESHOT_TIMEOUT
-#define ONESHOT_TIMEOUT 2000
-
-#define QUICK_TAP_TERM 0
+#define CHORDAL_HOLD // Prevents accidental same-hand modifier activation in rolls. Read more: https://docs.qmk.fm/tap_hold#chordal-hold
+#define PERMISSIVE_HOLD // If permissive hold option is enabled, the dual-role key will perform its hold action even within the tapping term. Read more: https://docs.qmk.fm/tap_hold#permissive-hold
+#define TAPPING_TERM 200
+#define FLOW_TAP_TERM 150 // Flow Tap modifies mod-tap MT and layer-tap LT keys such that when pressed within a short timeout of the preceding key, the tapping behavior is triggered.
+#define ONESHOT_TIMEOUT 1200 // How long to wait before the oneshot times out
+#define QUICK_TAP_TERM 0 // If set to 0, it removes the auto-repeat ability and activates the hold function instead.
 
 #define USB_SUSPEND_WAKEUP_DELAY 0
-#define SERIAL_NUMBER "BWvJA/NoYydB"
-#define LAYER_STATE_8BIT
-#define HCS(report)                                         \
-    host_consumer_send(record->event.pressed ? report : 0); \
-    return false
-
-#define RGB_MATRIX_STARTUP_SPD 60
-#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_CUSTOM_PALETTEFX_FLOW
+#define LAYER_STATE_8BIT // Limits the number of layers that the firmware uses to 8.
 
 #define PALETTEFX_FLOW_ENABLE
 #define PALETTEFX_POLARIZED_ENABLE
