@@ -140,6 +140,16 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 #endif
 
+#ifdef RAW_ENABLE
+layer_state_t layer_state_set_user(layer_state_t state) {
+    uint8_t msg[32] = {0};
+    msg[0] = get_highest_layer(state);
+    // Send the highest active layer to the host via raw HID.
+    host_raw_hid_send(msg, sizeof(msg));
+    return state;
+}
+#endif
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case UNDO_X:
