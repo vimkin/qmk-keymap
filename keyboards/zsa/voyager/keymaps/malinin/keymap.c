@@ -3,7 +3,7 @@
 #include QMK_KEYBOARD_H
 #include "os_detection.h"
 
-enum layers { BASE, SYMBOLS, MEDIA_NAV, NUM, RU };
+enum layers { BASE, RU, SYMBOLS, MEDIA_NAV, NUM };
 
 enum custom_keycodes {
     SEL_ALL = SAFE_RANGE,
@@ -26,6 +26,16 @@ enum keycode_aliases {
     HRM_N = LT(SYMBOLS, KC_N),
     HRM_S = RCTL_T(KC_S),
 
+    // Aliases for home row mods on QWERTY
+    HRM_QWERTY_A = CTL_T(KC_A),
+    HRM_QWERTY_S = LT(SYMBOLS, KC_S),
+    HRM_QWERTY_D = ALT_T(KC_D),
+    HRM_QWERTY_F = GUI_T(KC_F),
+    HRM_QWERTY_J = RGUI_T(KC_J),
+    HRM_QWERTY_K = ALGR_T(KC_K),
+    HRM_QWERTY_L = LT(SYMBOLS, KC_L),
+    HRM_QWERTY_SCLN = RCTL_T(KC_SCLN),
+
     // One-shot mod keys.
     OSM_LCTL = OSM(MOD_LCTL),
     OSM_LSFT = OSM(MOD_LSFT),
@@ -40,25 +50,25 @@ enum keycode_aliases {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [BASE] = LAYOUT_voyager(
-    KC_NO,  UNDO_X,   CUT_X,   SEL_ALL,  TD(TD_COPY_PASTE),     KC_GRV,              LGUI(LSFT(KC_4)), CW_TOGG, KC_NO, KC_NO, KC_NO, TG(RU),
-    KC_ESC, KC_Z,     KC_Y,    KC_O,     KC_U,                  KC_EQL,              KC_Q,             KC_L,    KC_D,  KC_P,  KC_X,  KC_BSPC,
-    KC_W,   HRM_C,    HRM_I,   HRM_A,    HRM_E,                 KC_SCLN,             KC_K,             HRM_H,   HRM_T, HRM_N, HRM_S, KC_F,
-    KC_NO,  KC_QUOTE, KC_MINS, KC_COMM,  KC_DOT,                KC_SLASH,            KC_J,             KC_M,    KC_G,  KC_B,  KC_V,  KC_ENT,
-                                         LT(MEDIA_NAV, KC_SPC), OSM_LSFT,            MEH_T(KC_TAB),    LT(NUM, KC_R)
+    KC_NO,  UNDO_X,   CUT_X,   SEL_ALL,  TD(TD_COPY_PASTE),     KC_GRV,            LGUI(LSFT(KC_4)), CW_TOGG, KC_NO, KC_NO, KC_NO, TG(RU),
+    KC_ESC, KC_Z,     KC_Y,    KC_O,     KC_U,                  KC_EQL,            KC_Q,             KC_L,    KC_D,  KC_P,  KC_X,  KC_BSPC,
+    KC_W,   HRM_C,    HRM_I,   HRM_A,    HRM_E,                 KC_SCLN,           KC_K,             HRM_H,   HRM_T, HRM_N, HRM_S, KC_F,
+    KC_NO,  KC_QUOTE, KC_MINS, KC_COMM,  KC_DOT,                KC_SLASH,          KC_J,             KC_M,    KC_G,  KC_B,  KC_V,  KC_ENT,
+                                         LT(MEDIA_NAV, KC_SPC), OSM_LSFT,          MEH_T(KC_TAB),    LT(NUM, KC_R)
   ),
   [RU] = LAYOUT_voyager(
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,  KC_TRNS,
-    KC_TRNS, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,              KC_Y,     KC_U,    KC_I,    KC_O,    KC_P,     KC_TRNS,
-    KC_LBRC, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,              KC_H,     KC_J,    KC_K,    KC_L,    KC_SCLN,  KC_QUOT,
-    KC_RBRC, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,              KC_N,     KC_M,    KC_COMM, KC_DOT,  KC_SLASH, KC_TRNS,
-                                        KC_TRNS, KC_TRNS,           KC_TRNS,  KC_TRNS
-  ),
+    KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,          KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,         KC_TRNS,
+    KC_TRNS, KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,             KC_Y,    KC_U,         KC_I,         KC_O,         KC_P,            KC_TRNS,
+    KC_LBRC, HRM_QWERTY_A, HRM_QWERTY_S, HRM_QWERTY_D, HRM_QWERTY_F, KC_G,             KC_H,    HRM_QWERTY_J, HRM_QWERTY_K, HRM_QWERTY_L, HRM_QWERTY_SCLN, KC_QUOT,
+    KC_RBRC, KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,             KC_N,    KC_M,         KC_COMM,      KC_DOT,       KC_SLASH,        KC_TRNS,
+                                                       KC_TRNS,      KC_TRNS,          KC_TRNS, KC_TRNS
+),
   [SYMBOLS] = LAYOUT_voyager(
-    KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO,             KC_NO,   EMOJI,   KC_NO,   KC_NO,   KC_NO,    KC_NO,
-    KC_TRNS, KC_GRV,  KC_LABK, KC_RABK,  KC_MINS, KC_PIPE,           KC_CIRC, KC_LCBR, KC_RCBR, KC_DLR,  KC_BSLS,  KC_TRNS,
-    KC_NO,   KC_EXLM, KC_ASTR, KC_SLSH,  KC_EQL,  KC_AMPR,           KC_HASH, KC_LPRN, KC_RPRN, KC_SCLN, KC_DQUO,  KC_NO,
-    KC_NO,   KC_TILD, KC_PLUS, KC_COMM,  KC_DOT,  KC_PERC,           KC_AT,   KC_LBRC, KC_RBRC, KC_COLN, KC_QUOT, KC_TRNS,
-                                         KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS
+    KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO,            KC_NO,   EMOJI,   KC_NO,   KC_NO,   KC_NO,    KC_NO,
+    KC_TRNS, KC_GRV,  KC_LABK, KC_RABK,  KC_MINS, KC_PIPE,          KC_CIRC, KC_LCBR, KC_RCBR, KC_DLR,  KC_BSLS,  KC_TRNS,
+    KC_NO,   KC_EXLM, KC_ASTR, KC_SLSH,  KC_EQL,  KC_AMPR,          KC_HASH, KC_LPRN, KC_RPRN, KC_SCLN, KC_DQUO,  KC_NO,
+    KC_NO,   KC_TILD, KC_PLUS, KC_COMM,  KC_DOT,  KC_PERC,          KC_AT,   KC_LBRC, KC_RBRC, KC_COLN, KC_QUOT, KC_TRNS,
+                                         KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS
   ),
   [MEDIA_NAV] = LAYOUT_voyager(
     KC_NO,   KC_BRID,  KC_BRIU,  KC_VOLD,  KC_VOLU,  KC_MUTE,          KC_NO,   KC_NO,              KC_NO,   KC_NO,         KC_NO,       KC_NO,
@@ -113,6 +123,7 @@ static void send_os_shortcut(uint16_t mac_shortcut, uint16_t other_shortcut) {
   }
 }
 
+#ifdef TAP_DANCE_ENABLE
 void td_copy_paste_finished(tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     send_os_shortcut(LGUI(KC_C), LCTL(KC_C));
@@ -127,6 +138,7 @@ void td_copy_paste_reset(tap_dance_state_t *state, void *user_data) {
 tap_dance_action_t tap_dance_actions[] = {
   [TD_COPY_PASTE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_copy_paste_finished, td_copy_paste_reset),
 };
+#endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
