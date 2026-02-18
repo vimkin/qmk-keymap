@@ -17,6 +17,8 @@
             ]
         }
     },
+    // Set no cgroup limit because otherwise starting devcontainer with Podman fails.
+    "runArgs": ["--pids-limit=-1"],
     "postCreateCommand": "${containerWorkspaceFolder}/.devcontainer/setup.sh ${containerWorkspaceFolder}"
 
     // Features to add to the dev container. More info: https://containers.dev/features.
