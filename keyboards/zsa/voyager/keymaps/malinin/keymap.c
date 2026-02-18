@@ -58,10 +58,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   [RU] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,          KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,         KC_TRNS,
-    KC_TRNS, KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,             KC_Y,    KC_U,         KC_I,         KC_O,         KC_P,            KC_TRNS,
-    KC_LBRC, HRM_QWERTY_A, HRM_QWERTY_S, HRM_QWERTY_D, HRM_QWERTY_F, KC_G,             KC_H,    HRM_QWERTY_J, HRM_QWERTY_K, HRM_QWERTY_L, HRM_QWERTY_SCLN, KC_QUOT,
-    KC_RBRC, KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,             KC_N,    KC_M,         KC_COMM,      KC_DOT,       KC_SLASH,        KC_TRNS,
-                                                       KC_TRNS,      KC_TRNS,          KC_TRNS, KC_TRNS
+    KC_TRNS, KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,             KC_LBRC,    KC_U,         KC_I,         KC_O,         KC_P,            KC_TRNS,
+    KC_GRV,  HRM_QWERTY_A, HRM_QWERTY_S, HRM_QWERTY_D, HRM_QWERTY_F, KC_G,             KC_H,    HRM_QWERTY_J, HRM_QWERTY_K, HRM_QWERTY_L, HRM_QWERTY_SCLN, KC_QUOT,
+    KC_RBRC,  KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,             KC_N,    KC_M,         KC_COMM,      KC_DOT,       KC_SLASH,        KC_TRNS,
+                                                       KC_TRNS,      KC_TRNS,          KC_TRNS, LT(NUM, KC_Y)
 ),
   [SYMBOLS] = LAYOUT_voyager(
     KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO,            KC_NO,   EMOJI,   KC_NO,   KC_NO,   KC_NO,    KC_NO,
