@@ -25,6 +25,7 @@ enum keycode_aliases {
     HRM_T = ALGR_T(KC_T),
     HRM_N = LT(SYMBOLS, KC_N),
     HRM_S = RCTL_T(KC_S),
+    RTHMB_R = LT(NUM, KC_R),
 
     // Aliases for home row mods on QWERTY
     HRM_QWERTY_A = CTL_T(KC_A),
@@ -35,6 +36,7 @@ enum keycode_aliases {
     HRM_QWERTY_K = ALGR_T(KC_K),
     HRM_QWERTY_L = LT(SYMBOLS, KC_L),
     HRM_QWERTY_SCLN = RCTL_T(KC_SCLN),
+    RTHMB_QWERTY_Y = LT(NUM, KC_Y),
 
     // One-shot mod keys.
     OSM_LCTL = OSM(MOD_LCTL),
@@ -54,14 +56,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_ESC, KC_Z,     KC_Y,    KC_O,     KC_U,                  KC_EQL,            KC_Q,             KC_L,    KC_D,  KC_P,  KC_X,  KC_BSPC,
     KC_W,   HRM_C,    HRM_I,   HRM_A,    HRM_E,                 KC_SCLN,           KC_K,             HRM_H,   HRM_T, HRM_N, HRM_S, KC_F,
     KC_NO,  KC_QUOTE, KC_MINS, KC_COMM,  KC_DOT,                KC_SLASH,          KC_J,             KC_M,    KC_G,  KC_B,  KC_V,  KC_ENT,
-                                         LT(MEDIA_NAV, KC_SPC), OSM_LSFT,          MEH_T(KC_TAB),    LT(NUM, KC_R)
+                                         LT(MEDIA_NAV, KC_SPC), OSM_LSFT,          MEH_T(KC_TAB),    RTHMB_R
   ),
   [RU] = LAYOUT_voyager(
     KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,          KC_TRNS, KC_TRNS,      KC_TRNS,      KC_TRNS,      KC_TRNS,         KC_TRNS,
-    KC_TRNS, KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,             KC_LBRC,    KC_U,         KC_I,         KC_O,         KC_P,            KC_TRNS,
+    KC_TRNS, KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,             KC_LBRC, KC_U,         KC_I,         KC_O,         KC_P,            KC_TRNS,
     KC_GRV,  HRM_QWERTY_A, HRM_QWERTY_S, HRM_QWERTY_D, HRM_QWERTY_F, KC_G,             KC_H,    HRM_QWERTY_J, HRM_QWERTY_K, HRM_QWERTY_L, HRM_QWERTY_SCLN, KC_QUOT,
-    KC_RBRC,  KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,             KC_N,    KC_M,         KC_COMM,      KC_DOT,       KC_SLASH,        KC_TRNS,
-                                                       KC_TRNS,      KC_TRNS,          KC_TRNS, LT(NUM, KC_Y)
+    KC_RBRC, KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,             KC_N,    KC_M,         KC_COMM,      KC_DOT,       KC_SLASH,        KC_TRNS,
+                                                       KC_TRNS,      KC_TRNS,          KC_TRNS, RTHMB_QWERTY_Y
 ),
   [SYMBOLS] = LAYOUT_voyager(
     KC_NO,   KC_NO,   KC_NO,   KC_NO,    KC_NO,   KC_NO,            KC_NO,   EMOJI,   KC_NO,   KC_NO,   KC_NO,    KC_NO,
@@ -121,6 +123,43 @@ static void send_os_shortcut(uint16_t mac_shortcut, uint16_t other_shortcut) {
     default:
       tap_code16(other_shortcut);
   }
+}
+
+// Flow Tap (pre_process_record) converts a tap-hold key to a plain tap when
+// pressed shortly after another key, preventing accidental mod/layer triggers
+// during fast typing. We exclude layer-tap keys here so that Flow Tap never
+// forces them to tap — we want their hold (layer switch) to remain accessible
+// even mid-typing. Without this exclusion, Flow Tap would intercept the event
+// before get_hold_on_other_key_press() ever runs, making the layer unreachable
+// during fast input.
+bool is_flow_tap_key(uint16_t keycode) {
+  if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
+    return false; // Disable Flow Tap on hotkeys.
+  }
+
+  // Exclude layer-tap keys from Flow Tap so their hold action (layer switch)
+  // is always reachable.
+  switch (keycode) {
+    case HRM_I:
+    case HRM_N:
+    case RTHMB_R:
+    case HRM_QWERTY_S:
+    case HRM_QWERTY_L:
+    case RTHMB_QWERTY_Y:
+      return false;
+  }
+
+  switch (get_tap_keycode(keycode)) {
+    case KC_SPC:
+    case KC_A ... KC_Z:
+    case KC_DOT:
+    case KC_COMM:
+    case KC_SCLN:
+    case KC_SLSH:
+      return true;
+  }
+
+  return false;
 }
 
 #ifdef TAP_DANCE_ENABLE
